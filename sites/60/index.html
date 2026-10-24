@@ -1,26 +1,65 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Card 60 · Boba Bash Greater Noida</title>
-  <meta name="theme-color" content="#fbf6e8">
-  <link rel="stylesheet" href="../style.css">
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title> SpookyBoba - The Haunted Event Map</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>@font-face{font-family:'Creepster';src:url(https://gstatic.com)}</style>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-<body>
-  <main>
-    <img src="../boba-bash.webp" alt="Hack Club's Boba Bash" width="240">
-    <h1>Card 60</h1>
-    <p>This page is waiting for its owner to build something.</p>
-    <div class="card">
-      <b>Is this your card?</b>
-      <ol>
-        <li>Fork <a href="https://github.com/bobabash/bobabash.github.io">bobabash/bobabash.github.io</a></li>
-        <li>Edit only the <code>sites/60/</code> folder. Start with <a href="https://github.com/bobabash/bobabash.github.io/blob/main/sites/60/index.html"><code>sites/60/index.html</code></a></li>
-        <li>Open a pull request called <code>Card 60: Your Name</code></li>
-      </ol>
+<body class="bg-black text-gray-300 min-h-screen font-mono selection:bg-red-900 [font-family:'Creepster',sans-serif_#room-info,_h1]">
+  <header class="p-4 flex items-center gap-6 border-b border-red-950 bg-neutral-950/80">
+    <img src="/boba-bash.webp" alt="5" class="h-16 grayscale sepia hue-rotate-315 contrast-125 animate-pulse" />
+    <div>
+      <h1 class="text-red-600 text-4xl tracking-wider">SpookyBoba: Underworld</h1>
+      <p class="text-xs text-red-400 mt-1">Trapped inside the architecture grid...</p>
     </div>
-    <p class="foot">BOBA BASH GREATER NOIDA · HACK CLUB</p>
+  </header>
+  <main class="p-4 max-w-7xl mx-auto">
+    <div class="border-4 border-red-950 shadow-[0_0_30px_rgba(220,38,38,0.15)] bg-neutral-950 overflow-hidden rounded-lg">
+      <svg id="map" viewBox="0 0 1600 1083" class="w-full h-auto bg-[#111a11] focus:outline-none focus-visible:outline-4 focus-visible:outline-dashed focus-visible:outline-red-600" tabindex="0">
+        <rect width="1600" height="1083" fill="#0a0f0a" />
+        <path d="M0,100H1600M0,200H1600M0,300H1600M0,400H1600M0,500H1600M0,600H1600M0,700H1600M0,800H1600M0,900H1600M0,1000H1600M200,0V1083M400,0V1083M600,0V1083M800,0V1083M1000,0V1083M1200,0V1083M1400,0V1083" stroke="rgba(220,38,38,0.05)" stroke-width="1"/>
+        <g id="rooms"></g>
+      </svg>
+    </div>
+    <div class="mt-4 grid md:grid-cols-2 gap-4 bg-neutral-950 p-4 border border-red-950/60 rounded-md text-xs shadow-inner">
+      <div>
+        <p class="text-gray-400"><span class="text-red-500 font-bold"> </p>
+        <p class="text-gray-500 mt-1">Iron walls block pass. </p>
+      </div>
+      <div class="flex flex-col justify-center items-start md:items-end border-t md:border-t-0 md:border-l border-red-950/40 pt-3 md:pt-0 md:pl-4">
+        <p id="room-info" class="text-green-400 text-xl tracking-wide">Locating souls...</p>
+        <p class="text-red-500 font-bold mt-1 text-sm tracking-wide" id="boba-counter">: 0</p>
+      </div>
+    </div>
   </main>
+  <script>
+    const txt = document.getElementById("room-info");
+    const rms = [
+      { n: "Upper Left Crypt", p: [[82,135],[365,128],[390,290],[100,310]] },
+      { n: "Upper Left Torture Stairwell", p: [[370,130],[510,125],[522,215],[390,225]] },
+      { n: "Upper Left Séance Room", p: [[395,220],[520,215],[530,295],[405,305]] },
+      { n: "Upper Central Catacombs", p: [[530,160],[785,160],[785,290],[530,295]] },
+      { n: "Central Pit Corridor", p: [[530,295],[810,290],[815,445],[545,455]] },
+      { n: "Central Dungeon Cells", p: [[545,455],[815,445],[820,600],[550,610]] },
+      { n: "The Abyss Core", p: [[545,610],[810,600],[815,815],[565,820]] },
+      { n: "Main Gallows Auditorium", p: [[850,445],[1045,450],[1045,595],[850,595]] },
+      { n: "Right Shadow Vault", p: [[850,595],[980,595],[980,810],[850,810]] },
+      { n: "Right Decay Chamber", p: [[980,595],[1045,595],[1045,810],[980,810]] },
+      { n: "Lower Right Mausoleum Hall", p: [[805,815],[1165,810],[1165,970],[805,970]] }
+    ];
+    rms.forEach(r => {
+      const el = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+      el.setAttribute("points", r.p.map(pair => pair.join(",")).join(" "));
+      el.setAttribute("class", "cursor-pointer fill-[rgba(34,197,94,0.08)] stroke-[rgba(220,38,38,0.4)] stroke-[3px] transition-all duration-300 hover:fill-[rgba(34,197,94,0.25)] hover:stroke-[#22c55e] focus:fill-[rgba(34,197,94,0.25)] focus:stroke-[#22c55e] focus:outline-none");
+      el.setAttribute("tabindex", "0"); el.setAttribute("role", "region"); el.setAttribute("aria-label", r.n);
+      el.onmouseenter = () => txt.textContent = `Entering: ${r.n}`;
+      el.onfocus = () => txt.textContent = `Location: ${r.n}`;
+      el.onmouseleave = () => txt.textContent = "Roaming the void...";
+      document.getElementById("rooms").appendChild(el);
+    });
+  </script>
 </body>
 </html>
+
